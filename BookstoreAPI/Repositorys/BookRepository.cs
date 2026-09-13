@@ -3,7 +3,7 @@ using BookstoreAPI.Entities;
 
 public class BookRepository
 {
-    private List<Book> books { get; set; }
+    private List<Book> books { get; set; } = new();
     
     public void CreateBook(Book book)
     {
@@ -21,15 +21,9 @@ public class BookRepository
         books.Add(book);
     }
 
-    public Book GetBookById(string Id)
+    public Book? GetBookById(Guid Id)
     {
-        foreach (var book in books)
-        {
-            if (book.Id.ToString() == Id)
-                return book;
-        }
-        
-        return null;
+        return books.FirstOrDefault(book => book.Id == Id);
     }
 
     public void DeleteBook(Book book)
