@@ -17,11 +17,8 @@ public class CreateBook
     {
         var createdBooks = repository.GetBooks();
         
-        if (createdBooks.Any(book => book.Title == bookModel.Title)) 
-            return (created: false, message: "Title já existe");
-        
-        if (createdBooks.Any(book => book.Author == bookModel.Author)) 
-            return (created: false, message: "Author já existe");
+        if (createdBooks.Any(book => book.Title == bookModel.Title && book.Author == bookModel.Author)) 
+            return (created: false, message: "Livro já existe");
         
         var newBook = new Book(
             title: bookModel.Title, 

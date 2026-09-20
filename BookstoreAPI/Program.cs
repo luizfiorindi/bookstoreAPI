@@ -1,9 +1,11 @@
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
+using BookstoreAPI.Repositorys;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddSingleton<BookRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {

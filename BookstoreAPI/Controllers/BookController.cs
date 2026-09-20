@@ -2,11 +2,16 @@ using BookstoreAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using BookstoreAPI.Comunications.Requests;
 using BookstoreAPI.Comunications.Responses;
+using BookstoreAPI.Repositorys;
 using BookstoreAPI.UseCases;
 namespace BookstoreAPI.Controllers;
 
 public class BookController : BookMainController
 {
+    public BookController(BookRepository bookRepository) : base(bookRepository)
+    {
+    }
+
     [HttpPost]
     [ProducesResponseType(typeof(CreatedBookResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(CreatedBookResponse), StatusCodes.Status400BadRequest)]
@@ -21,7 +26,7 @@ public class BookController : BookMainController
             Title = request.Title
         };
         
-        var createBook = new CreateBook(base.bookRepository);
+        var createBook = new CreateBook(BookRepository);
         var createReturn = createBook.Execute(bookModel);
         var response = new CreatedBookResponse
         {

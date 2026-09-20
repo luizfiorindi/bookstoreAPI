@@ -7,7 +7,12 @@ namespace BookstoreAPI.Controllers;
 [ApiController]
 public abstract class BookMainController : Controller
 {
-    protected BookRepository bookRepository = new BookRepository();
+    protected BookRepository BookRepository { get; }
+
+    protected BookMainController(BookRepository bookRepository)
+    {
+        BookRepository = bookRepository;
+    }
     
     [HttpGet("health")] 
     public IActionResult Health()
