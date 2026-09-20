@@ -38,4 +38,25 @@ public class BookController : BookMainController
 
         return Created("",response);
     }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(List<GetBookResponse>), StatusCodes.Status200OK)]
+    public IActionResult GetBooks ()
+    {
+        var listbooks = new ListBooks(BookRepository);
+        var books = listbooks.GetBooks();
+        var response = new List<GetBookResponse>();
+        foreach (var book in books)
+        {
+            var bookResponse = new GetBookResponse
+            {
+                Title =  book.Title,
+                Author = book.Author,
+                Price = book.Price,
+                Stock = book.Stock,
+            };
+            response.Add(bookResponse);
+        }
+        return Ok(response);
+    }
 }
