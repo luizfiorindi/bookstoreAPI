@@ -1,3 +1,4 @@
+using BookstoreAPI.Repositorys;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookstoreAPI.Controllers;
@@ -6,10 +7,11 @@ namespace BookstoreAPI.Controllers;
 [ApiController]
 public abstract class BookMainController : Controller
 {
-    [HttpGet("health")]
+    protected BookRepository bookRepository = new BookRepository();
+    
+    [HttpGet("health")] 
     public IActionResult Health()
     {
         return Ok("Healthy");
     }
-    
 }

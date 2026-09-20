@@ -36,6 +36,8 @@ public class CreateBook
         if (!validatedBook.validated)
             return (created: false, message: validatedBook.message);
         
+        repository.CreateBook(newBook);
+        
         return (created: true, message: null);
     }
 }

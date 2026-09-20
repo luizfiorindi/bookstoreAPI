@@ -6,8 +6,8 @@ namespace BookstoreAPI.Entities;
 public class Book
 {
     public Guid Id { get; private set; }
-    public string Title { get; private set; } = string.Empty;
-    public string Author { get; private set; } = string.Empty;
+    public string Title { get; private set; }
+    public string Author { get; private set; }
     public Genre Genre { get; private set; }
     public decimal Price { get; private set; }
     public int Stock { get; private set; }
@@ -41,9 +41,15 @@ public class Book
     }
 
     public (bool validated, string? message) Validate()
-    {
-        if (Price < 0) return (validated: false, message: "Price não pode ser negativo");
-        if (Stock < 0) return (validated:false, message: "Stock não pode ser negativo");
+    {   
+        if (Title.Length < 3 || Title.Length > 120) 
+            return (false, "Título deve ter entre 3 e 120 caracteres");
+        if (Author.Length < 3 || Author.Length > 120)
+            return (false, "Autor deve ter entre 3 e 120 caracteres");
+        if (!Enum.IsDefined(typeof(Enums.Genre), Genre)) 
+            return (false, "O gênero informado é inválido");
+        if (Price < 0) return ( false, "Price não pode ser negativo");
+        if (Stock < 0) return (false, "Stock não pode ser negativo");
         
         return (validated: true, message: null);
     }
