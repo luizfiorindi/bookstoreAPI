@@ -50,6 +50,7 @@ public class BookController : BookMainController
         {
             var bookResponse = new GetBookResponse
             {
+                Id =  book.Id,
                 Title =  book.Title,
                 Author = book.Author,
                 Price = book.Price,
@@ -58,5 +59,54 @@ public class BookController : BookMainController
             response.Add(bookResponse);
         }
         return Ok(response);
+    }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(BookModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public IActionResult GetBook([FromRoute] Guid id)
+    {
+        var listBooks = new ListBooks(BookRepository);
+        var book = listBooks.GetBookById(id);
+        if (book is null)
+            return NotFound();
+        var response = new GetBookResponse
+        {
+            Id = book.Id,
+            Title = book.Title,
+            Author =  book.Author,
+            Price = book.Price,
+            Stock = book.Stock,
+            
+        };
+        return Ok(response);
+    }
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(UpdatedBookResponse), StatusCodes.Status400BadRequest)]
+    public IActionResult UpdateBook([FromRoute] Guid id, [FromBody] BookRequest request)
+    {
+        var bookModel = new BookModel
+        {
+            Id = id,
+            Title = request.Title,
+            Author = request.Author,
+            Price = request.Price,
+            Stock = request.Stock,
+        };
+
+        var updateBook = new UpdateBook(BookRepository);
+        var listBook = new ListBooks(BookRepository);
+        if (listBook.GetBookById(id) is null)
+            return NotFound();
+        var updatedBook = updateBook.Execute(bookModel);
+        if (updatedBook.Updated) return NoContent();
+        var response = new UpdatedBookResponse
+        {
+            ErrorMessage = updatedBook.ErrorMessage ?? ""
+        };
+        return BadRequest(response);
     }
 }

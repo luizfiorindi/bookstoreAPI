@@ -22,6 +22,7 @@ public class ListBooks
             {
                 var bookModel = new BookModel
                 {
+                    Id =  book.Id,
                     Title =  book.Title,
                     Author = book.Author,
                     Price = book.Price,
@@ -33,5 +34,26 @@ public class ListBooks
         }
         
         return booksModel;
+    }
+
+    public BookModel? GetBookById(Guid Id)
+    {
+        var book = repository.GetBookById(Id);
+        if (book is not null)
+        {
+            var bookModel = new BookModel
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Author = book.Author,
+                Price = book.Price,
+                Stock = book.Stock,
+                Genre = book.Genre
+            };
+            
+            return bookModel;
+        }
+        
+        return null;
     }
 }

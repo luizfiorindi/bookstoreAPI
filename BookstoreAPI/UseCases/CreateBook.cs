@@ -21,6 +21,7 @@ public class CreateBook
             return (created: false, message: "Livro já existe");
         
         var newBook = new Book(
+            Id: null,
             title: bookModel.Title, 
             author: bookModel.Author, 
             genre: bookModel.Genre, 

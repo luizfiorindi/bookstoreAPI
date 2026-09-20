@@ -14,9 +14,9 @@ public class Book
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
-    public Book(string title, string author, Genre genre, decimal price, int stock)
+    public Book(Guid? Id, string title, string author, Genre genre, decimal price, int stock)
     {
-        Id = Guid.NewGuid();
+        this.Id = Id ?? Guid.NewGuid();
         Title = title;
         Author = author;
         Genre = genre;
@@ -25,18 +25,8 @@ public class Book
         CreatedAt = DateTime.UtcNow;
     }
 
-    public void Update(
-        string title,
-        string author,
-        Genre genre,
-        decimal price,
-        int stock)
+    public void Update()
     {
-        Title = title;
-        Author = author;
-        Genre = genre;
-        Price = price;
-        Stock = stock;
         UpdatedAt = DateTime.UtcNow;
     }
 

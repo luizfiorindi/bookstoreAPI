@@ -17,7 +17,9 @@ public class BookRepository
 
     public void UpdateBook(Book book)
     {
-        books.Remove(book);
+        var removeBook = GetBookById(book.Id);
+        if  (removeBook != null)
+            books.Remove(removeBook);
         books.Add(book);
     }
 
@@ -28,6 +30,8 @@ public class BookRepository
 
     public void DeleteBook(Book book)
     {
-        books.Remove(book);
+        var removeBook = GetBookById(book.Id);
+        if  (removeBook != null)
+            books.Remove(removeBook);
     }
 }
