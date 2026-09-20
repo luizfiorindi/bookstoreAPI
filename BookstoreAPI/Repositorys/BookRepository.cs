@@ -28,9 +28,9 @@ public class BookRepository
         return books.FirstOrDefault(book => book.Id == Id);
     }
 
-    public void DeleteBook(Book book)
+    public void DeleteBook(Guid Id)
     {
-        var removeBook = GetBookById(book.Id);
+        var removeBook = GetBookById(Id);
         if  (removeBook != null)
             books.Remove(removeBook);
     }

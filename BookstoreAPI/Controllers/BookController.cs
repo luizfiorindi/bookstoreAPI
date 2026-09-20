@@ -2,6 +2,7 @@ using BookstoreAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using BookstoreAPI.Comunications.Requests;
 using BookstoreAPI.Comunications.Responses;
+using BookstoreAPI.Enums;
 using BookstoreAPI.Repositorys;
 using BookstoreAPI.UseCases;
 namespace BookstoreAPI.Controllers;
@@ -108,5 +109,35 @@ public class BookController : BookMainController
             ErrorMessage = updatedBook.ErrorMessage ?? ""
         };
         return BadRequest(response);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public IActionResult DeleteBook([FromRoute] Guid id)
+    {
+        var deleteBook = new DeleteBook(BookRepository);
+        var deletedBook = deleteBook.Execute(id);
+        if (deletedBook.deleted) return NoContent();
+        return NotFound();
+    }
+
+    [HttpGet("Genres")]
+    [ProducesResponseType(typeof(List<GenreResponse>), StatusCodes.Status200OK)]
+    public IActionResult GetGenres()
+    {
+        var response = new List<GenreResponse>();
+        foreach (var genre in Enum.GetValues<Genre>())
+        {
+            var genreResponse = new GenreResponse
+            {
+                Id = (int)genre,
+                Name = genre.ToString()
+            };
+            
+            response.Add(genreResponse);
+        }
+        
+        return Ok(response);
     }
 }
